@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><title>Kirim Gmail</title></head>
+<body>
+  <h2>Kirim Gmail</h2>
+  <form id="form">
+    <input placeholder="Nama" name="name" required><br>
+    <input placeholder="Email" type="email" name="email" required><br>
+    <input placeholder="Password" type="password" name="password" required><br>
+    <button type="submit">Kirim</button>
+  </form>
+  <script>
+    document.getElementById('form').onsubmit = async (e) => {
+      e.preventDefault();
+      const form = new FormData(e.target);
+      const data = Object.fromEntries(form.entries());
+
+      const res = await fetch('/api/save', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+
+      alert('Data berhasil dikirim!');
+      e.target.reset();
+    };
+  </script>
+</body>
+</html>
