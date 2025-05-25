@@ -464,22 +464,19 @@
                         <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21A2 2 0 0 0 5 23H19A2 2 0 0 0 21 21V9Z"/>
                     </svg>
                 </div>
-                <h2>Admin Dashboard</h2>
+                <h2>Gmail Dashboard</h2>
             </div>
             
-            <form class="login-form" id="loginForm">
-                <div class="input-group">
-                    <input type="password" id="adminpass" placeholder=" " required>
-                    <label>Admin Password</label>
-                </div>
-                <button type="submit" class="login-btn">
+            <div class="welcome-text" style="text-align: center; margin-bottom: 20px;">
+                <p style="color: #666; font-size: 16px; margin-bottom: 15px;">Selamat datang di dashboard Gmail</p>
+                <button class="login-btn" onclick="loadData()">
                     <div class="loading"></div>
-                    <span>Login</span>
+                    <span>Lihat Data Gmail</span>
                 </button>
-            </form>
+            </div>
             
             <div class="error-message" id="errorMessage">
-                Password admin salah. Silakan coba lagi.
+                Gagal memuat data. Silakan coba lagi.
             </div>
         </div>
 
@@ -556,23 +553,12 @@
         let filteredData = [];
         let isLoggedIn = false;
 
-        // Login functionality
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            await loadData();
-        });
-
+        // Login functionality - Load data directly without password
         async function loadData() {
-            const pass = document.getElementById('adminpass').value;
             const loginBtn = document.querySelector('.login-btn');
             const loading = loginBtn.querySelector('.loading');
             const errorMessage = document.getElementById('errorMessage');
             
-            if (!pass) {
-                showError('Password tidak boleh kosong');
-                return;
-            }
-
             // Show loading state
             loading.style.display = 'inline-block';
             loginBtn.disabled = true;
@@ -582,11 +568,11 @@
                 const response = await fetch('/api/get-all', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ adminpass: pass })
+                    body: JSON.stringify({})
                 });
 
                 if (!response.ok) {
-                    throw new Error('Login gagal');
+                    throw new Error('Gagal memuat data');
                 }
 
                 const data = await response.json();
@@ -606,7 +592,7 @@
                 updateStats();
 
             } catch (error) {
-                showError('Password admin salah atau terjadi kesalahan');
+                showError('Gagal memuat data Gmail');
             } finally {
                 // Reset loading state
                 loading.style.display = 'none';
@@ -618,13 +604,6 @@
             const errorMessage = document.getElementById('errorMessage');
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
-            
-            // Shake animation for password input
-            const passwordInput = document.getElementById('adminpass');
-            passwordInput.style.animation = 'shake 0.5s ease-in-out';
-            setTimeout(() => {
-                passwordInput.style.animation = '';
-            }, 500);
         }
 
         function showDashboard() {
@@ -708,7 +687,6 @@
             
             document.getElementById('dataSection').classList.remove('show');
             document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('adminpass').value = '';
             document.getElementById('searchInput').value = '';
             document.getElementById('errorMessage').style.display = 'none';
         }
@@ -721,4 +699,4 @@
         }, 30000);
     </script>
 </body>
-                          </html>
+</html>
