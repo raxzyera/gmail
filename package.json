@@ -1,0 +1,6 @@
+{
+  "name": "bulkform-vercel",
+  "dependencies": {
+    "mongodb": "^5.8.0"
+  }
+}
